@@ -10,7 +10,6 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         .rounded-card { border-radius: 1.5rem; }
-        .gradient-bg { background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%); }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans pb-12">
@@ -91,6 +90,18 @@
             return (
                 <section>
                     <h2 className="text-2xl font-bold mb-6 text-indigo-600">1. Backshifting: Cambio de tiempos</h2>
+                    
+                    <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-8">
+                        <h3 className="font-bold text-indigo-800 text-lg mb-2">¿Qué es el Reported Speech?</h3>
+                        <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                            El <strong>Reported Speech</strong> (o estilo indirecto) se utiliza para contar lo que alguien más dijo sin necesidad de citar sus palabras exactas. Es decir, "reportamos" el mensaje.
+                        </p>
+                        <h3 className="font-bold text-indigo-800 text-lg mb-2">¿Por qué lo llamamos "Backshifting"?</h3>
+                        <p className="text-slate-700 text-sm leading-relaxed">
+                            El término <strong>"Backshifting"</strong> (retroceso) ocurre porque, al reportar una acción, esta ya sucedió en un momento anterior al actual. Por lo tanto, debemos desplazar o "retroceder" los tiempos verbales hacia el pasado para mantener la coherencia temporal. Por ejemplo: si alguien dijo algo en Presente, al contarlo nosotros se convierte en Pasado.
+                        </p>
+                    </div>
+
                     <div className="grid gap-4">
                         {tenseData.map((item, idx) => (
                             <div key={idx} className="p-4 bg-white rounded-card border border-slate-200 shadow-sm">
@@ -147,21 +158,21 @@
                     <h2 className="text-2xl font-bold mb-6 text-indigo-600">Other Reporting Verbs</h2>
                     <div className="grid md:grid-cols-2 gap-4">
                         {[
-                            { verb: 'Add', ex1: '"I\'ll arrive at 8," he added.', ex2: 'He added that he would arrive at 8.' },
-                            { verb: 'Answer', ex1: '"No," she answered.', ex2: 'She answered that she wouldn\'t.' },
-                            { verb: 'Ask', ex1: '"Are you okay?" she asked.', ex2: 'She asked if I was okay.' },
-                            { verb: 'Claim', ex1: '"I\'m the winner," he claimed.', ex2: 'He claimed that he was the winner.' },
-                            { verb: 'Cry', ex1: '"I\'m lost!" he cried.', ex2: 'He cried that he was lost.' },
-                            { verb: 'Demand', ex1: '"Give me the money!" he demanded.', ex2: 'He demanded that I give him the money.' },
-                            { verb: 'Explain', ex1: '"I\'m busy," he explained.', ex2: 'He explained that he was busy.' },
-                            { verb: 'Instruct', ex1: '"Open your books," he instructed.', ex2: 'He instructed us to open our books.' },
-                            { verb: 'Mention', ex1: '"I\'m going home," he mentioned.', ex2: 'He mentioned that he was going home.' },
-                            { verb: 'Suggest', ex1: '"Let\'s dance," she suggested.', ex2: 'She suggested that we dance.' }
+                            { verb: 'Add', ex1: '"I\'ll arrive at 8," he added.', ex2: 'He added that he would arrive at 8.', ex3: 'She added that the price was high.', ex4: 'He added that it was too late.' },
+                            { verb: 'Answer', ex1: '"No," she answered.', ex2: 'She answered that she wouldn\'t.', ex3: 'He answered that he was busy.', ex4: 'They answered that they agreed.' },
+                            { verb: 'Ask', ex1: '"Are you okay?" she asked.', ex2: 'She asked if I was okay.', ex3: 'He asked where I lived.', ex4: 'They asked what time it was.' },
+                            { verb: 'Claim', ex1: '"I\'m the winner," he claimed.', ex2: 'He claimed that he was the winner.', ex3: 'She claimed that she saw him.', ex4: 'They claimed it was true.' },
+                            { verb: 'Cry', ex1: '"I\'m lost!" he cried.', ex2: 'He cried that he was lost.', ex3: 'She cried that it was unfair.', ex4: 'He cried that he couldn\'t do it.' },
+                            { verb: 'Demand', ex1: '"Give me the money!" he demanded.', ex2: 'He demanded that I give him the money.', ex3: 'She demanded to see the manager.', ex4: 'They demanded an apology.' },
+                            { verb: 'Explain', ex1: '"I\'m busy," he explained.', ex2: 'He explained that he was busy.', ex3: 'She explained the process.', ex4: 'They explained they were late.' },
+                            { verb: 'Instruct', ex1: '"Open your books," he instructed.', ex2: 'He instructed us to open our books.', ex3: 'She instructed me to wait.', ex4: 'They instructed us to sign.' },
+                            { verb: 'Mention', ex1: '"I\'m going home," he mentioned.', ex2: 'He mentioned that he was going home.', ex3: 'She mentioned that she was tired.', ex4: 'They mentioned it rained.' },
+                            { verb: 'Suggest', ex1: '"Let\'s dance," she suggested.', ex2: 'She suggested that we dance.', ex3: 'He suggested eating out.', ex4: 'They suggested a new plan.' }
                         ].map((item, idx) => (
                             <div key={idx} className="p-4 bg-slate-50 rounded-lg border border-slate-200">
                                 <h4 className="font-bold text-indigo-700 mb-1">{item.verb}</h4>
-                                <p className="text-xs text-slate-500 italic mb-1">Direct: {item.ex1}</p>
-                                <p className="text-xs text-indigo-800 font-semibold">Reported: {item.ex2}</p>
+                                <p className="text-xs text-slate-500 italic mb-1">Direct: {item.ex1} / {item.ex3}</p>
+                                <p className="text-xs text-indigo-800 font-semibold">Reported: {item.ex2} / {item.ex4}</p>
                             </div>
                         ))}
                     </div>
@@ -187,12 +198,25 @@
                 { direct: "Today", reported: "That day", directEx: "I am busy today", reportedEx: "He said he was busy that day" },
                 { direct: "Tomorrow", reported: "The next day", directEx: "You can't leave tomorrow", reportedEx: "They said we couldn't leave the next day" },
                 { direct: "Tonight", reported: "That night", directEx: "I'm going out tonight", reportedEx: "She said she was going out that night" },
-                { direct: "Yesterday", reported: "The day before or the previous day", directEx: "I called him yesterday", reportedEx: "He said he had called him the day before" }
+                { direct: "Yesterday", reported: "The day before", directEx: "I called him yesterday", reportedEx: "He said he had called him the day before" }
             ];
 
             return (
                 <section>
                     <h2 className="text-2xl font-bold mb-6 text-indigo-600">3. Cambios en Tiempo y Lugar</h2>
+                    
+                    <div className="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-8">
+                        <h3 className="font-bold text-indigo-800 text-lg mb-2">¿Por qué cambian el tiempo y lugar?</h3>
+                        <p className="text-slate-700 text-sm leading-relaxed">
+                            Los cambios de tiempo y lugar ocurren porque el contexto del narrador (el "ahora" y el "aquí") es distinto al del momento original. 
+                            Si alguien dice "I'll be here tomorrow" y tú reportas esa frase una semana después en otro lugar, 
+                            "here" ya no tiene sentido porque no es donde tú estás, ni "tomorrow" es el día siguiente. 
+                            Debemos adaptar estas referencias para que el mensaje sea comprensible en el nuevo contexto del reporte.
+                            <br/><br/>
+                            <strong>Ejemplo:</strong> Si alguien dice "I met him 2 days <strong>ago</strong>" (hace 2 días), al reportarlo, necesitamos una referencia relativa al momento del reporte, por eso usamos "2 days <strong>before</strong>".
+                        </p>
+                    </div>
+
                     <div className="grid gap-4">
                         {data.map((item, idx) => (
                             <div key={idx} className="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
@@ -217,14 +241,16 @@
                 
                 <div className="bg-white p-6 rounded-card border border-slate-200">
                     <h3 className="text-xl font-bold mb-3 text-indigo-800">Pronombres Personales (Personal Pronouns)</h3>
-                    <p className="mb-4 text-sm text-slate-600">Son los que sustituyen al sujeto de la oración, es decir, quién realiza la acción. En el Reported Speech, cambian para reflejar correctamente quién está realizando la acción desde la perspectiva del nuevo narrador.</p>
+                    <p className="mb-4 text-sm text-slate-600">
+                        Los pronombres personales indican quién realiza la acción (yo, tú, él, ella, etc.). Al reportar, debemos cambiar el pronombre original por uno que se ajuste a la perspectiva de la nueva frase. Por ejemplo, si alguien dijo "I like apples", al reportarlo diremos "He said he liked apples".
+                    </p>
                     <table className="w-full text-left border-collapse bg-white">
                         <thead><tr className="bg-indigo-50"><th className="p-2">Direct</th><th className="p-2">Reported</th></tr></thead>
                         <tbody>
                             <tr><td className="p-2 border-t">I</td><td className="p-2 border-t font-semibold">She / He</td></tr>
                             <tr><td className="p-2 border-t">You</td><td className="p-2 border-t font-semibold">I / We</td></tr>
-                            <tr><td className="p-2 border-t">We</td><td className="p-2 border-t font-semibold">They</td></tr>
-                            <tr><td className="p-2 border-t">They</td><td className="p-2 border-t font-semibold">They / She</td></tr>
+                            <tr><td className="p-2 border-t">We</td><td className="p-2 border-t font-semibold">We / They</td></tr>
+                            <tr><td className="p-2 border-t">They</td><td className="p-2 border-t font-semibold">They / You</td></tr>
                             <tr><td className="p-2 border-t">She</td><td className="p-2 border-t font-semibold">She / You</td></tr>
                             <tr><td className="p-2 border-t">He</td><td className="p-2 border-t font-semibold">He / You</td></tr>
                             <tr><td className="p-2 border-t">It</td><td className="p-2 border-t font-semibold">It</td></tr>
@@ -233,8 +259,10 @@
                 </div>
 
                 <div className="bg-white p-6 rounded-card border border-slate-200">
-                    <h3 className="text-xl font-bold mb-3 text-indigo-800">Pronombres Posesivos (Possessive)</h3>
-                    <p className="mb-4 text-sm text-slate-600">Indican pertenencia. Al informar algo de alguien más, la relación de propiedad debe ajustarse: si alguien dijo "mi coche", el narrador dirá "su coche" (de él o de ella).</p>
+                    <h3 className="text-xl font-bold mb-3 text-indigo-800">Pronombres Posesivos (Possessive Pronouns)</h3>
+                    <p className="mb-4 text-sm text-slate-600">
+                        Estos pronombres indican a quién pertenece algo (mi coche, su casa). Al cambiar de narrador, la pertenencia puede cambiar; si alguien dijo "That is my car", el reportero dirá "He said it was his car".
+                    </p>
                     <table className="w-full text-left border-collapse bg-white">
                         <thead><tr className="bg-indigo-50"><th className="p-2">Direct</th><th className="p-2">Reported</th></tr></thead>
                         <tbody>
@@ -242,8 +270,8 @@
                             <tr><td className="p-2 border-t">Your</td><td className="p-2 border-t font-semibold">My / Our</td></tr>
                             <tr><td className="p-2 border-t">Our</td><td className="p-2 border-t font-semibold">Our / Their</td></tr>
                             <tr><td className="p-2 border-t">Their</td><td className="p-2 border-t font-semibold">Their / You</td></tr>
-                            <tr><td className="p-2 border-t">Her</td><td className="p-2 border-t font-semibold">Her / Your</td></tr>
-                            <tr><td className="p-2 border-t">His</td><td className="p-2 border-t font-semibold">His / Your</td></tr>
+                            <tr><td className="p-2 border-t">Her</td><td className="p-2 border-t font-semibold">Her / You</td></tr>
+                            <tr><td className="p-2 border-t">His</td><td className="p-2 border-t font-semibold">His / You</td></tr>
                             <tr><td className="p-2 border-t">Its</td><td className="p-2 border-t font-semibold">Its</td></tr>
                         </tbody>
                     </table>
@@ -251,7 +279,9 @@
 
                 <div className="bg-white p-6 rounded-card border border-slate-200">
                     <h3 className="text-xl font-bold mb-3 text-indigo-800">Pronombres Objeto (Object Pronouns)</h3>
-                    <p className="mb-4 text-sm text-slate-600">Estos pronombres sustituyen a quien recibe la acción del verbo. Deben cambiarse para concordar con la persona a la que se refiere el nuevo narrador.</p>
+                    <p className="mb-4 text-sm text-slate-600">
+                        Estos pronombres reciben la acción del verbo. Si alguien dice "Help me", el reporte cambia a "He asked me to help him" (cambiando 'me' por 'him').
+                    </p>
                     <table className="w-full text-left border-collapse bg-white">
                         <thead><tr className="bg-indigo-50"><th className="p-2">Direct</th><th className="p-2">Reported</th></tr></thead>
                         <tbody>
@@ -273,9 +303,9 @@
                 <h2 className="text-2xl font-bold text-emerald-600">5. Reported Questions</h2>
                 
                 <div className="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
-                    <h3 className="font-bold text-lg mb-2 text-emerald-800">Estructura y Auxiliares</h3>
+                    <h3 className="font-bold text-lg mb-2 text-emerald-800">Estructura y Reglas Básicas</h3>
                     <p className="text-slate-600 text-sm mb-4">
-                        Las <em>Reported Questions</em> relatan una pregunta realizada por alguien. Por lo tanto, <strong>no son preguntas directas</strong>. Esto significa que debemos eliminar los auxiliares interrogativos (do, does, did) y estructurar la frase como una afirmación (Sujeto + Verbo).
+                        Las <em>Reported Questions</em> no son preguntas directas. Al contarlas, eliminamos los auxiliares interrogativos (do, does, did) y estructuramos la frase como una oración afirmativa: <strong>Sujeto + Verbo</strong>.
                     </p>
                     <div className="p-4 bg-emerald-50 rounded-lg italic text-emerald-900 font-medium">
                         Direct: "Where <strong>do</strong> you usually watch TV?" <br/>
@@ -284,9 +314,9 @@
                 </div>
 
                 <div className="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
-                    <h3 className="font-bold text-lg mb-2 text-emerald-800">Wanted to Know</h3>
+                    <h3 className="font-bold text-lg mb-2 text-emerald-800">Reporting: "Wanted to know"</h3>
                     <p className="text-slate-600 text-sm mb-4">
-                        Puedes usar el verbo <em>asked</em> o la frase <em>wanted to know</em> para introducir estas preguntas.
+                        Además de <em>asked</em>, podemos usar <em>wanted to know</em> para introducir estas preguntas.
                     </p>
                     <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700">
                         <li>"How <strong>does</strong> he do that?" ➜ She wanted to know how he <strong>did</strong> it.</li>
@@ -297,7 +327,7 @@
                 <div className="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
                     <h3 className="font-bold text-lg mb-2 text-emerald-800">Yes / No Questions (If / Whether)</h3>
                     <p className="text-slate-600 text-sm mb-4">
-                        Cuando no hay una palabra interrogativa (who, when, where), usamos <em>if</em> o <em>whether</em> para introducir la pregunta reportada.
+                        Si la pregunta original no tiene palabra interrogativa (who, where, what), usamos <em>if</em> o <em>whether</em> para introducirla.
                     </p>
                     <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700">
                         <li>"<strong>Do</strong> you like the advert?" ➜ He wanted to know <strong>if</strong> I liked the advert.</li>
@@ -308,7 +338,7 @@
                 <div className="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
                     <h3 className="font-bold text-lg mb-2 text-emerald-800">El verbo "To Be" al final</h3>
                     <p className="text-slate-600 text-sm mb-4">
-                        Si el verbo principal es <em>to be</em>, movemos el verbo al final de la oración reportada.
+                        Si el verbo principal de la pregunta es <em>to be</em> (is, are, was, were), este se traslada al final de la oración reportada.
                     </p>
                     <div className="space-y-4">
                         <div className="p-4 bg-emerald-50 rounded-lg italic text-emerald-900 font-medium">
