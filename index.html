@@ -7,11 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .rounded-card { border-radius: 1.5rem; }
-        .hidden-section { display: none; }
-        .active-section { display: block; }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans pb-12">
+<body class="bg-slate-50 text-slate-800 pb-12">
 
     <div id="root" class="max-w-5xl mx-auto p-4 md:p-8">
         <header class="mb-8 text-center">
@@ -20,17 +19,15 @@
         </header>
 
         <nav id="navbar" class="flex flex-wrap gap-2 mb-8 justify-center">
-            <!-- Buttons will be injected here -->
         </nav>
 
         <main id="main-content" class="min-h-[500px]">
-            <!-- Content will be injected here -->
         </main>
     </div>
 
     <script>
-        const sections = ['tense', 'saytell', 'time', 'pronouns', 'questions', 'practice'];
         let activeSection = 'tense';
+        let currentIndex = 0;
 
         const navItems = [
             { id: 'tense', label: '1. Backshifting' },
@@ -41,56 +38,102 @@
             { id: 'practice', label: 'Práctica' }
         ];
 
-        const getContent = (section) => {
-            switch(section) {
-                case 'tense': return renderTenseChanges();
-                case 'saytell': return renderSayTell();
-                case 'time': return renderTimeExpressions();
-                case 'pronouns': return renderPronouns();
-                case 'questions': return renderQuestions();
-                case 'practice': return renderPractice();
-                default: return '';
+        const exercises = [
+            { q: 'The boy asked the tour guide, "Where is the main tourist office?"', a: 'the boy asked the tour guide where the main tourist office was' },
+            { q: 'The police officer said, "Get out of the car!"', a: 'the police officer ordered the boys to get out of the car' },
+            { q: 'The woman asked, "How long have you worked as a tour guide?"', a: 'the woman wanted to know how long i had worked as a tour guide' },
+            { q: 'He said, "Come to me!"', a: 'he told me to go to him' },
+            { q: 'I asked the waiter, "When is dinner served?"', a: 'i asked the waiter when dinner was served' },
+            { q: 'The doctor told me, "You should cut down on your smoking."', a: 'the doctor told me i should cut down on my smoking' },
+            { q: 'He asked me, "Do you understand all the rules?"', a: 'he asked me if i understood all the rules' },
+            { q: 'She asked me, "When will I see you again?"', a: 'she asked me when she would see me again' },
+            { q: 'My parents said, "We are going on holiday tomorrow."', a: 'my parents said that they were going on holiday the next day' },
+            { q: 'She said, "Wait until I get back!"', a: 'she told him to wait until she got back' },
+            { q: 'My sister said, "I always eat lots of fresh fruit and salad."', a: 'my sister said that she always ate lots of fresh fruit and salad' },
+            { q: 'The workers said, "We won\'t have enough time to finish the job."', a: 'the workers said that they wouldn\'t have enough time to finish the job' },
+            { q: 'The passengers asked, "Could someone help me with the luggage?"', a: 'the passengers asked if someone could help them with the luggage' },
+            { q: 'Mom said, "Don\'t worry!"', a: 'mom told me not to worry' },
+            { q: 'Jack said, "We must leave soon."', a: 'jack said that they had to leave soon' }
+        ];
+
+        function renderSection(content) {
+            document.getElementById('main-content').innerHTML = content;
+        }
+
+        function handleCheck() {
+            const input = document.getElementById('practice-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+            const correctAnswer = exercises[currentIndex].a;
+
+            if (input === correctAnswer) {
+                feedback.innerHTML = `
+                    <div class="p-4 bg-emerald-600 rounded-lg text-white mt-4 shadow-lg">
+                        <p class="font-bold">¡Excelente! Respuesta correcta.</p>
+                        <button onclick="nextQuestion()" class="underline font-semibold mt-2">Siguiente ejercicio →</button>
+                    </div>
+                `;
+            } else {
+                feedback.innerHTML = `
+                    <div class="p-4 bg-rose-600 rounded-lg text-white mt-4 shadow-lg">
+                        <p class="font-bold">¡Incorrecto! Inténtalo de nuevo.</p>
+                        <button onclick="revealAnswer()" class="text-sm underline mt-2 font-semibold">Ver respuesta correcta</button>
+                    </div>
+                `;
             }
-        };
+        }
+
+        function revealAnswer() {
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = `
+                <div class="p-4 bg-amber-600 rounded-lg text-white mt-4">
+                    <p class="font-bold mb-1">La respuesta correcta era:</p>
+                    <p class="italic font-mono text-sm">"${exercises[currentIndex].a}"</p>
+                    <button onclick="nextQuestion()" class="mt-4 underline font-bold">Siguiente ejercicio →</button>
+                </div>
+            `;
+        }
+
+        function nextQuestion() {
+            currentIndex = (currentIndex + 1) % exercises.length;
+            renderApp();
+        }
 
         function renderTenseChanges() {
-            const data = [
-                { direct: "I want a holiday", reported: "She told me she wanted a holiday", explanation: "Present Simple → Past Simple" },
-                { direct: "Bob is annoying me", reported: "Jane said Bob was annoying her", explanation: "Present Continuous → Past Continuous" },
-                { direct: "I have eaten too much", reported: "He said he had eaten too much", explanation: "Present Perfect → Past Perfect" },
-                { direct: "The class has been interesting", reported: "Anne said the class had been interesting", explanation: "Present Perfect Continuous → Past Perfect Continuous" },
-                { direct: "I saw her arrive", reported: "He told me he had seen her arrive", explanation: "Past Simple → Past Perfect" },
-                { direct: "The team were playing well", reported: "John said the team had been playing well", explanation: "Past Continuous → Past Perfect Continuous" },
-                { direct: "I had arrived before 9am", reported: "She said she had arrived before 9am", explanation: "Past Perfect → No change" },
-                { direct: "We had already been dating for 3 years", reported: "Mick told me they had already been dating for 3 years", explanation: "Past Perfect Continuous → No change" },
-                { direct: "I will take you out tonight", reported: "He said he would take me out tonight", explanation: "Will → Would" },
-                { direct: "I can easily pass the test", reported: "She said she could easily pass the test", explanation: "Can → Could" },
-                { direct: "You must leave immediately", reported: "He told me I had to leave immediately", explanation: "Must → Had to" },
-                { direct: "We may go out later", reported: "She said they might go out later", explanation: "May → Might" },
-                { direct: "You ought to come at 7pm", reported: "He told me I ought to come at 7pm", explanation: "Ought to → No change" },
-                { direct: "I should have helped you", reported: "He said he should have helped me", explanation: "Should → No change" },
-                { direct: "I would walk the dog at night", reported: "She said she would walk the dog at night", explanation: "Would → No change" },
-                { direct: "You couldn't do it", reported: "He told me I couldn't do it", explanation: "Could → No change" },
-                { direct: "I might arrive late", reported: "He said he might arrive late", explanation: "Might → No change" }
+            const items = [
+                { dir: '"I want a holiday"', rep: 'She told me she wanted a holiday', exp: 'Present Simple → Past Simple' },
+                { dir: '"Bob is annoying me"', rep: 'Jane said Bob was annoying her', exp: 'Present Continuous → Past Continuous' },
+                { dir: '"I have eaten too much"', rep: 'He said he had eaten too much', exp: 'Present Perfect → Past Perfect' },
+                { dir: '"The class has been interesting"', rep: 'Anne said the class had been interesting', exp: 'Present Perfect Continuous → Past Perfect Continuous' },
+                { dir: '"I saw her arrive"', rep: 'He told me he had seen her arrive', exp: 'Past Simple → Past Perfect' },
+                { dir: '"The team were playing well"', rep: 'John said the team had been playing well', exp: 'Past Continuous → Past Perfect Continuous' },
+                { dir: '"I had arrived before 9am"', rep: 'She said she had arrived before 9am', exp: 'Past Perfect → No change' },
+                { dir: '"We had already been dating for 3 years"', rep: 'Mick told me they had already been dating for 3 years', exp: 'Past Perfect Continuous → No change' },
+                { dir: '"I will take you out tonight"', rep: 'He said he would take me out tonight', exp: 'Will → Would' },
+                { dir: '"I can easily pass the test"', rep: 'She said she could easily pass the test', exp: 'Can → Could' },
+                { dir: '"You must leave immediately"', rep: 'He told me I had to leave immediately', exp: 'Must → Had to' },
+                { dir: '"We may go out later"', rep: 'She said they might go out later', exp: 'May → Might' },
+                { dir: '"You ought to come at 7pm"', rep: 'He told me I ought to come at 7pm', exp: 'Ought to → No change' },
+                { dir: '"I should have helped you"', rep: 'He said he should have helped me', exp: 'Should → No change' },
+                { dir: '"I would walk the dog at night"', rep: 'She said she would walk the dog at night', exp: 'Would → No change' },
+                { dir: '"You couldn\'t do it"', rep: 'He told me I couldn\'t do it', exp: 'Could → No change' },
+                { dir: '"I might arrive late"', rep: 'He said he might arrive late', exp: 'Might → No change' }
             ];
 
             return `
                 <section>
-                    <h2 class="text-2xl font-bold mb-6 text-indigo-600">1. Backshifting: Cambio de tiempos</h2>
-                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-8">
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">1. Backshifting: Cambio de tiempos</h2>
+                    <div class="bg-indigo-50 p-6 rounded-card border border-indigo-100 mb-8">
                         <h3 class="font-bold text-indigo-800 text-lg mb-2">¿Qué es el Reported Speech?</h3>
-                        <p class="text-slate-700 text-sm mb-4 leading-relaxed">Es la herramienta que usamos para contar lo que alguien más dijo sin citar sus palabras exactas.</p>
-                        <h3 class="font-bold text-indigo-800 text-lg mb-2">¿Por qué "Backshifting"?</h3>
-                        <p class="text-slate-700 text-sm leading-relaxed">"Backshifting" (retroceso temporal) ocurre porque, al reportar una acción en un momento posterior al original, debemos "retroceder" el tiempo verbal hacia el pasado para mantener la coherencia. Si alguien dijo "quiero una manzana" ayer, hoy al reportarlo, ese deseo ya sucedió en el pasado, por lo tanto, usamos el pasado simple "quería".</p>
+                        <p class="text-slate-700 text-sm mb-4 leading-relaxed">Es la herramienta que usamos para contar lo que alguien más dijo sin citar sus palabras exactas. Al reportar una acción que ocurrió en el pasado, debemos ajustar el tiempo verbal hacia atrás ("Backshifting") para mantener la coherencia temporal.</p>
                     </div>
-                    <div class="grid gap-4">
-                        ${data.map(item => `
-                            <div class="p-4 bg-white rounded-card border border-slate-200 shadow-sm">
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <div><span class="font-bold text-xs uppercase text-indigo-400">Direct:</span> <p class="font-medium">"${item.direct}"</p></div>
-                                    <div><span class="font-bold text-xs uppercase text-indigo-400">Reported:</span> <p class="font-medium text-indigo-900">${item.reported}</p></div>
+                    <div class="space-y-4">
+                        ${items.map(item => `
+                            <div class="bg-white p-4 rounded-xl border-l-4 border-indigo-500 shadow-sm">
+                                <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                    <div><span class="font-bold text-indigo-600 block">Direct:</span> <span class="italic text-slate-600">${item.dir}</span></div>
+                                    <div><span class="font-bold text-indigo-600 block">Reported:</span> <span class="text-slate-800">${item.rep}</span></div>
                                 </div>
-                                <div class="mt-3 text-sm text-indigo-700 bg-indigo-50 p-2 rounded-lg italic">➜ ${item.explanation}</div>
+                                <div class="mt-2 text-xs font-mono bg-slate-100 px-2 py-1 inline-block rounded text-slate-500">${item.exp}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -99,24 +142,25 @@
         }
 
         function renderSayTell() {
-            const reportingVerbs = [
-                { verb: 'Add', e1: '"I\'ll arrive at 8," he added.', e2: 'He added that he would arrive at 8.' },
-                { verb: 'Answer', e1: '"No," she answered.', e2: 'She answered that she wouldn\'t.' },
-                { verb: 'Ask', e1: '"Are you okay?" she asked.', e2: 'She asked if I was okay.' },
-                { verb: 'Claim', e1: '"I\'m the winner," he claimed.', e2: 'He claimed that he was the winner.' },
-                { verb: 'Cry', e1: '"I\'m lost!" he cried.', e2: 'He cried that he was lost.' },
-                { verb: 'Demand', e1: '"Give me the money!" he demanded.', e2: 'He demanded that I give him the money.' },
-                { verb: 'Explain', e1: '"I\'m busy," he explained.', e2: 'He explained that he was busy.' },
-                { verb: 'Instruct', e1: '"Open your books," he instructed.', e2: 'He instructed us to open our books.' },
-                { verb: 'Mention', e1: '"I\'m going home," he mentioned.', e2: 'He mentioned that he was going home.' },
-                { verb: 'Suggest', e1: '"Let\'s dance," she suggested.', e2: 'She suggested that we dance.' }
+            const otherVerbs = [
+                { v: 'Add', dir: '"I\'ll arrive at 8," he added.', rep: 'He added that he would arrive at 8.' },
+                { v: 'Answer', dir: '"No," she answered.', rep: 'She answered that she wouldn\'t.' },
+                { v: 'Ask', dir: '"Are you okay?" she asked.', rep: 'She asked if I was okay.' },
+                { v: 'Claim', dir: '"I\'m the winner," he claimed.', rep: 'He claimed that he was the winner.' },
+                { v: 'Cry', dir: '"I\'m lost!" he cried.', rep: 'He cried that he was lost.' },
+                { v: 'Demand', dir: '"Give me the money!" he demanded.', rep: 'He demanded that I give him the money.' },
+                { v: 'Explain', dir: '"I\'m busy," he explained.', rep: 'He explained that he was busy.' },
+                { v: 'Instruct', dir: '"Open your books," he instructed.', rep: 'He instructed us to open our books.' },
+                { v: 'Mention', dir: '"I\'m going home," he mentioned.', rep: 'He mentioned that he was going home.' },
+                { v: 'Suggest', dir: '"Let\'s dance," she suggested.', rep: 'He suggested that we dance.' }
             ];
 
             return `
                 <section class="space-y-8">
-                    <div class="bg-white p-8 rounded-card shadow-sm border border-slate-200">
-                        <h2 class="text-2xl font-bold mb-6 text-indigo-600">Reporting Verbs: Say & Tell</h2>
-                        <p class="mb-6 text-slate-600">Usamos <strong>said</strong> y <strong>told</strong>. <strong>Said</strong> no requiere objeto. <strong>Told</strong> SIEMPRE requiere un objeto (me, him, her...).</p>
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">2. Say vs Tell</h2>
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm">
+                        <p class="text-slate-700 mb-6">Usamos <strong>said</strong> y <strong>told</strong>. <strong>Said</strong> no requiere objeto. <strong>Told</strong> SIEMPRE requiere un objeto (me, him, her...).</p>
+                        
                         <div class="grid md:grid-cols-2 gap-8">
                             <div class="p-6 bg-slate-50 rounded-xl border border-slate-200">
                                 <h3 class="font-bold text-lg mb-4 text-indigo-800">Say (Sin objeto)</h3>
@@ -129,21 +173,24 @@
                             <div class="p-6 bg-indigo-50 rounded-xl border border-indigo-100">
                                 <h3 class="font-bold text-lg mb-4 text-indigo-800">Tell (Con objeto)</h3>
                                 <ul class="space-y-3 text-sm text-slate-700">
-                                    <li>"I will call." ➜ He told <strong>me</strong> he would call.</li>
-                                    <li>"You look great." ➜ She told <strong>him</strong> he looked great.</li>
-                                    <li>"It's ready." ➜ She told <strong>them</strong> it was ready.</li>
+                                    <li>"I will call." ➜ He told me he would call.</li>
+                                    <li>"You look great." ➜ She told him he looked great.</li>
+                                    <li>"It's ready." ➜ She told them it was ready.</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white p-8 rounded-card shadow-sm border border-indigo-100">
-                        <h2 class="text-2xl font-bold mb-6 text-indigo-600">Other Reporting Verbs</h2>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            ${reportingVerbs.map(item => `
-                                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                                    <h4 class="font-bold text-indigo-700 mb-1">${item.verb}</h4>
-                                    <p class="text-xs text-slate-500 italic mb-1">Direct: ${item.e1}</p>
-                                    <p class="text-xs text-indigo-800 font-semibold">Reported: ${item.e2}</p>
+
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-xl mb-6 text-indigo-800">Other Reporting Verbs</h3>
+                        <div class="space-y-4">
+                            ${otherVerbs.map(item => `
+                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm">
+                                    <span class="font-bold text-indigo-600">${item.v}</span>
+                                    <div class="grid md:grid-cols-2 gap-4 mt-2 italic text-slate-600">
+                                        <span>Direct: ${item.dir}</span>
+                                        <span>Reported: ${item.rep}</span>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -153,44 +200,39 @@
         }
 
         function renderTimeExpressions() {
-            const data = [
-                { d: "Ago", r: "Before", ex: "I met him 2 days ago ➜ She said she had met him 2 days before" },
-                { d: "Bring", r: "Take", ex: "Bring me the book ➜ He told me to take him the book" },
-                { d: "Come", r: "Go", ex: "Come here! ➜ She told me to go there" },
-                { d: "Here", r: "There", ex: "I'll have lunch here ➜ She said she would have lunch there" },
-                { d: "Last night", r: "The night before", ex: "I went out last night ➜ He said he had gone out the night before" },
-                { d: "Last week", r: "The week before", ex: "I finished it last week ➜ He said he had finished it the week before" },
-                { d: "Next week", r: "The week after", ex: "I'll travel next week ➜ She said she would travel the week after" },
-                { d: "Next year", r: "The following year", ex: "I will move next year ➜ He said he would move the following year" },
-                { d: "Now", r: "Then", ex: "They don't want to sell now ➜ They said they didn't want to sell then" },
-                { d: "These", r: "Those", ex: "I like these shoes ➜ She said she liked those shoes" },
-                { d: "This", r: "That", ex: "I love this song ➜ He said he loved that song" },
-                { d: "This week", r: "That week", ex: "I am busy this week ➜ She said she was busy that week" },
-                { d: "Thus", r: "So", ex: "It happened thus ➜ He explained it happened so" },
-                { d: "Today", r: "That day", ex: "I am busy today ➜ He said he was busy that day" },
-                { d: "Tomorrow", r: "The next day", ex: "You can't leave tomorrow ➜ They said we couldn't leave the next day" },
-                { d: "Tonight", r: "That night", ex: "I'm going out tonight ➜ She said she was going out that night" },
-                { d: "Yesterday", r: "The day before", ex: "I called him yesterday ➜ He said he had called him the day before" }
+            const items = [
+                { d: "Ago", i: "Before", ex: "I visited him two years ago.", re: "I said I had visited him two years before." },
+                { d: "Bring", i: "Take", ex: "Bring me the book.", re: "He told me to take him the book." },
+                { d: "Come", i: "Go", ex: "Come to my party.", re: "He invited me to go to his party." },
+                { d: "Here", i: "There", ex: "I work here.", re: "He said he worked there." },
+                { d: "Last night", i: "The night before", ex: "I went out last night.", re: "He said he had gone out the night before." },
+                { d: "Last week", i: "The week before", ex: "I was busy last week.", re: "He said he had been busy the week before." },
+                { d: "Next week", i: "The week after", ex: "I will travel next week.", re: "He said he would travel the week after." },
+                { d: "Next year", i: "The following year", ex: "I'll graduate next year.", re: "He said he'd graduate the following year." },
+                { d: "Now", i: "Then", ex: "I am eating now.", re: "He said he was eating then." },
+                { d: "These", i: "Those", ex: "I like these shoes.", re: "He said he liked those shoes." },
+                { d: "This", i: "That", ex: "This is my house.", re: "He said that was his house." },
+                { d: "This week", i: "That week", ex: "I'm working this week.", re: "He said he was working that week." },
+                { d: "Thus", i: "So", ex: "It is thus.", re: "He said it was so." },
+                { d: "Today", i: "That day", ex: "I'm busy today.", re: "He said he was busy that day." },
+                { d: "Tomorrow", i: "The next day", ex: "I'll go tomorrow.", re: "He said he'd go the next day." },
+                { d: "Tonight", i: "That night", ex: "I'll study tonight.", re: "He said he'd study that night." },
+                { d: "Yesterday", i: "The day before", ex: "I arrived yesterday.", re: "He said he had arrived the day before." }
             ];
 
             return `
                 <section>
-                    <h2 class="text-2xl font-bold mb-6 text-indigo-600">3. Time & Place Expressions</h2>
-                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-8">
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">3. Time & Place</h2>
+                    <div class="bg-indigo-50 p-6 rounded-card border border-indigo-100 mb-8">
                         <p class="text-slate-700 text-sm leading-relaxed">
-                            <strong>¿Por qué cambian?</strong> Cuando reportamos una frase, el marco de referencia (lugar y tiempo) cambia. Lo que era "hoy" para el hablante original, quizás ya es "el martes" para nosotros. Por eso, al reportar, debemos ajustar esas palabras para reflejar la realidad del momento en que estamos contando la historia.
+                            El cambio de palabras de tiempo y lugar ocurre porque el marco de referencia del emisor original ("hoy aquí") ya no coincide con el del reportero ("ayer allí"). Al contar la historia desde otro contexto, debemos ajustar estas palabras para mantener la veracidad temporal y espacial.
                         </p>
                     </div>
-                    <div class="grid gap-4">
-                        ${data.map(item => `
-                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="font-bold text-slate-500">${item.d}</span>
-                                    <span class="text-indigo-600 font-bold">➜ ${item.r}</span>
-                                </div>
-                                <div class="text-xs bg-slate-50 p-2 rounded text-slate-700 italic border-l-4 border-indigo-200 pl-3">
-                                    ${item.ex}
-                                </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        ${items.map(item => `
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-sm">
+                                <p class="text-indigo-600 font-bold mb-1">${item.d} ➜ ${item.i}</p>
+                                <p class="text-slate-600 italic">"${item.ex}" ➜ ${item.re}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -201,28 +243,30 @@
         function renderPronouns() {
             return `
                 <section class="space-y-8">
-                    <h2 class="text-2xl font-bold text-indigo-600">4. Pronouns</h2>
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">4. Pronouns</h2>
                     
-                    <div class="bg-white p-6 rounded-card border border-slate-200">
-                        <h3 class="text-xl font-bold mb-3 text-indigo-800">Personal Pronouns</h3>
-                        <p class="mb-4 text-sm text-slate-600">Sustituyen al sujeto de la oración. Cambian porque el narrador cambia (ej: "Yo dije..." → "Él dijo que él...").</p>
-                        <table class="w-full text-left border-collapse bg-white text-sm">
-                            <thead><tr class="bg-indigo-50"><th class="p-2">Direct</th><th class="p-2">Reported</th></tr></thead>
-                            <tbody>
-                                ${[{d:'I', r:'she/he'}, {d:'You', r:'i/we'}, {d:'We', r:'we/they'}, {d:'They', r:'they/you'}, {d:'She', r:'she/you'}, {d:'He', r:'he/you'}, {d:'It', r:'it'}].map(p => `<tr><td class="p-2 border-t">${p.d}</td><td class="p-2 border-t font-semibold">${p.r}</td></tr>`).join('')}
-                            </tbody>
-                        </table>
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold mb-4 text-indigo-800">Personal Pronouns</h3>
+                        <p class="mb-4 text-slate-600">Sustituyen al sujeto. Cambian al reportar porque la persona que realiza la acción suele ser distinta al emisor original.</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm font-mono bg-slate-50 p-4 rounded-lg">
+                            <span>I ➜ she/he</span> <span>You ➜ I/we</span> <span>We ➜ we/they</span> <span>They ➜ they/you</span> <span>She ➜ she/you</span> <span>He ➜ he/you</span> <span>It ➜ it</span>
+                        </div>
                     </div>
 
-                    <div class="bg-white p-6 rounded-card border border-slate-200">
-                        <h3 class="text-xl font-bold mb-3 text-indigo-800">Possessive Pronouns</h3>
-                        <p class="mb-4 text-sm text-slate-600">Indican posesión (mi, tu, su). Se ajustan según el nuevo dueño del objeto en la frase reportada.</p>
-                        <table class="w-full text-left border-collapse bg-white text-sm">
-                            <thead><tr class="bg-indigo-50"><th class="p-2">Direct</th><th class="p-2">Reported</th></tr></thead>
-                            <tbody>
-                                ${[{d:'My', r:'his/her'}, {d:'Your', r:'my/our'}, {d:'Our', r:'our/their'}, {d:'Their', r:'their/you'}, {d:'Her', r:'her/you'}, {d:'His', r:'his/you'}, {d:'Its', r:'its'}].map(p => `<tr><td class="p-2 border-t">${p.d}</td><td class="p-2 border-t font-semibold">${p.r}</td></tr>`).join('')}
-                            </tbody>
-                        </table>
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold mb-4 text-indigo-800">Possessive Pronouns</h3>
+                        <p class="mb-4 text-slate-600">Indican posesión. Se ajustan según quién es el dueño del objeto desde la nueva perspectiva del narrador.</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm font-mono bg-slate-50 p-4 rounded-lg">
+                            <span>My ➜ his/her</span> <span>Your ➜ my/our</span> <span>Our ➜ our/their</span> <span>Their ➜ their/you</span> <span>Her ➜ her/you</span> <span>His ➜ his/you</span> <span>Its ➜ its</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold mb-4 text-indigo-800">Object Pronouns</h3>
+                        <p class="mb-4 text-slate-600">Reciben la acción. Cambian cuando el receptor de la acción es distinto al original.</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm font-mono bg-slate-50 p-4 rounded-lg">
+                            <span>Me ➜ her/him</span> <span>You ➜ me/us</span> <span>Us ➜ us/them</span> <span>Them ➜ them/you</span> <span>Her ➜ her/you</span> <span>Him ➜ him/you</span> <span>It ➜ it</span>
+                        </div>
                     </div>
                 </section>
             `;
@@ -231,71 +275,38 @@
         function renderQuestions() {
             return `
                 <section class="space-y-6">
-                    <h2 class="text-2xl font-bold text-emerald-600">5. Reported Questions</h2>
-                    <div class="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
-                        <h3 class="font-bold text-lg mb-2 text-emerald-800">1. Estructura normal</h3>
-                        <p class="text-slate-600 text-sm mb-4">Las reported questions NO llevan auxiliares (do/does/did). Siguen el orden Afirmativo.</p>
-                        <div class="p-4 bg-emerald-50 rounded-lg italic text-emerald-900 font-medium">"Where do you live?" ➜ He asked me where I lived.</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
-                        <h3 class="font-bold text-lg mb-2 text-emerald-800">2. If / Whether</h3>
-                        <p class="text-slate-600 text-sm mb-4">Si es pregunta Yes/No, usamos "if" o "whether".</p>
-                        <div class="p-4 bg-emerald-50 rounded-lg italic text-emerald-900 font-medium">"Do you like it?" ➜ He wanted to know if I liked it.</div>
-                    </div>
-                    <div class="bg-white p-6 rounded-card border border-emerald-100 shadow-sm">
-                        <h3 class="font-bold text-lg mb-2 text-emerald-800">3. El verbo "Be" al final</h3>
-                        <p class="text-slate-600 text-sm mb-4">Si el verbo principal es "be", este se mueve al final.</p>
-                        <div class="p-4 bg-emerald-50 rounded-lg italic text-emerald-900 font-medium">"Where is the problem?" ➜ We wanted to know what the problem was.</div>
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">5. Reported Questions</h2>
+                    <div class="bg-white p-6 rounded-card border border-slate-200 shadow-sm space-y-6">
+                        <div class="p-4 bg-indigo-50 rounded-lg">
+                            <h4 class="font-bold text-indigo-800 mb-2">1. Estructura normal</h4>
+                            <p class="text-sm text-slate-700 mb-2">Las reported questions NO llevan auxiliares (do/does/did). Siguen el orden Afirmativo.</p>
+                            <p class="text-sm font-medium text-slate-800">"Where do you live?" ➜ <strong>He asked me where I lived.</strong></p>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-bold text-indigo-800 mb-2">2. If / Whether</h4>
+                            <p class="text-sm text-slate-700 mb-2">Si es pregunta Yes/No, usamos "if" o "whether".</p>
+                            <p class="text-sm font-medium text-slate-800">"Do you like it?" ➜ <strong>He wanted to know if I liked it.</strong></p>
+                        </div>
+
+                        <div class="p-4 bg-indigo-50 rounded-lg">
+                            <h4 class="font-bold text-indigo-800 mb-2">3. El verbo "Be" al final</h4>
+                            <p class="text-sm text-slate-700 mb-2">Si el verbo principal es "be", este se mueve al final.</p>
+                            <p class="text-sm font-medium text-slate-800">"Where is the problem?" ➜ <strong>We wanted to know what the problem was.</strong></p>
+                        </div>
                     </div>
                 </section>
             `;
         }
 
         function renderPractice() {
-            const exercises = [
-                { q: 'The boy asked the tour guide, "Where is the main tourist office?"', a: 'the boy asked the tour guide where the main tourist office was' },
-                { q: 'The police officer said, "Get out of the car!"', a: 'the police officer ordered the boys to get out of the car' },
-                { q: 'The woman asked, "How long have you worked as a tour guide?"', a: 'the woman wanted to know how long i had worked as a tour guide' },
-                { q: 'He said, "Come to me!"', a: 'he told me to go to him' },
-                { q: 'I asked the waiter, "When is dinner served?"', a: 'i asked the waiter when dinner was served' },
-                { q: 'The doctor told me, "You should cut down on your smoking."', a: 'the doctor told me i should cut down on my smoking' },
-                { q: 'He asked me, "Do you understand all the rules?"', a: 'he asked me if i understood all the rules' },
-                { q: 'She asked me, "When will I see you again?"', a: 'she asked me when she would see me again' },
-                { q: 'My parents said, "We are going on holiday tomorrow."', a: 'my parents said that they were going on holiday the next day' },
-                { q: 'She said, "Wait until I get back!"', a: 'she told him to wait until she got back' },
-                { q: 'My sister said, "I always eat lots of fresh fruit and salad."', a: 'my sister said that she always ate lots of fresh fruit and salad' },
-                { q: 'The workers said, "We won\'t have enough time to finish the job."', a: 'the workers said that they wouldn\'t have enough time to finish the job' },
-                { q: 'The passengers asked, "Could someone help me with the luggage?"', a: 'the passengers asked if someone could help them with the luggage' },
-                { q: 'Mom said, "Don\'t worry!"', a: 'mom told me not to worry' },
-                { q: 'Jack said, "We must leave soon."', a: 'jack said that they had to leave soon' }
-            ];
-
-            // Using global state for the practice section
-            window.currentIndex = 0;
-
-            const handleCheck = () => {
-                const input = document.getElementById('practice-input').value;
-                const feedback = document.getElementById('feedback');
-                if(input.trim().toLowerCase() === exercises[window.currentIndex].a) {
-                    feedback.innerHTML = '<div class="p-4 bg-emerald-600 rounded-lg text-white mt-4">¡Excelente! <button class="underline ml-4" onclick="nextQuestion()">Siguiente</button></div>';
-                } else {
-                    feedback.innerHTML = `<div class="p-4 bg-rose-600 rounded-lg text-white mt-4">Intenta de nuevo. La respuesta correcta era: "${exercises[window.currentIndex].a}"</div>`;
-                }
-            };
-
-            window.nextQuestion = () => {
-                window.currentIndex = (window.currentIndex + 1) % exercises.length;
-                renderApp();
-            };
-
             return `
                 <div class="bg-slate-900 text-white p-8 rounded-card">
-                    <h2 class="text-2xl font-bold mb-6 text-indigo-400">Práctica</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-400">Práctica (Ejercicio ${currentIndex + 1})</h2>
                     <div class="p-6 bg-slate-800 rounded-xl mb-4">
-                        <p class="text-lg mb-4 text-indigo-200">Ejercicio ${window.currentIndex + 1}</p>
-                        <p class="text-xl font-medium mb-6">${exercises[window.currentIndex].q}</p>
+                        <p class="text-xl font-medium mb-6 italic">"${exercises[currentIndex].q}"</p>
                         <input id="practice-input" class="w-full p-3 text-slate-900 rounded-lg border-2 border-indigo-500 focus:outline-none mb-4" placeholder="Escribe aquí tu respuesta...">
-                        <button onclick="(${handleCheck.toString()})()" class="bg-indigo-600 hover:bg-indigo-500 px-6 py-2 rounded-full font-bold">Comprobar</button>
+                        <button onclick="handleCheck()" class="bg-indigo-600 hover:bg-indigo-500 px-6 py-2 rounded-full font-bold">Comprobar</button>
                     </div>
                     <div id="feedback"></div>
                 </div>
@@ -304,21 +315,25 @@
 
         function renderApp() {
             const nav = document.getElementById('navbar');
-            const main = document.getElementById('main-content');
-
             nav.innerHTML = navItems.map(item => `
                 <button
-                    onclick="activeSection = '${item.id}'; renderApp();"
+                    onclick="activeSection = '${item.id}'; currentIndex = 0; renderApp();"
                     class="px-4 py-2 rounded-full font-medium transition-all ${activeSection === item.id ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-300'}"
                 >
                     ${item.label}
                 </button>
             `).join('');
 
-            main.innerHTML = getContent(activeSection);
+            switch(activeSection) {
+                case 'tense': renderSection(renderTenseChanges()); break;
+                case 'saytell': renderSection(renderSayTell()); break;
+                case 'time': renderSection(renderTimeExpressions()); break;
+                case 'pronouns': renderSection(renderPronouns()); break;
+                case 'questions': renderSection(renderQuestions()); break;
+                case 'practice': renderSection(renderPractice()); break;
+            }
         }
 
-        // Start app
         renderApp();
     </script>
 </body>
